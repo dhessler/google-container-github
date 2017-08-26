@@ -3,7 +3,7 @@
 Github integration for Google Cloud Container Builder, using Google Cloud Functions to update Github commit status when a build reaches a specific state.
 
 ## Setup
-- Create a Github access token [here](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line).
+- Create a Github personal access token with `repo:status` scope [here](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line).
 - Set the `PROJECT_ID` variable:
 ```
 export PROJECT_ID=my-project-id

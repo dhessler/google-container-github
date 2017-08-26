@@ -2,7 +2,7 @@ const github = require('octonode');
 const util = require('util');
 
 const config = require('./config.json');
-const client = github.client(config.GITHUB_TOKEN);
+const client = github.client(config.GITHUB_ACCESS_TOKEN);
 
 // pending, success, error, or failure
 const toGithubStatus = (gcbStatus) => {
