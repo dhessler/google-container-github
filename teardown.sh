@@ -2,7 +2,7 @@
 
 # Clean config file.
 cat <<EOF > config.json
-{"SLACK_WEBHOOK_URL" : "https://hooks.slack.com/services/XXX"}
+{"GITHUB_ACCESS_TOKEN" : "myaccesstoken"}
 EOF
 
 [ -z "$PROJECT_ID" ] && echo "Need to set PROJECT_ID" && exit 1;

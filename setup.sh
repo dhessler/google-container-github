@@ -1,27 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ -z "$PROJECT_ID" ] && echo "Need to set PROJECT_ID" && exit 1;
+[ -z "$GITHUB_ACCESS_TOKEN" ] && echo "Need to set GITHUB_ACCESS_TOKEN" && exit 1;
+
 gcloud config set project $PROJECT_ID
 
-# Create config file with SLACK_WEBHOOK_URL and GC_SLACK_STATUS.
-if [ -z "$GC_SLACK_STATUS" ]; then
-  export GC_SLACK_STATUS="SUCCESS FAILURE TIMEOUT INTERNAL_ERROR"
-fi
-arr=(`echo ${GC_SLACK_STATUS}`);
-json_array() {
-  echo -n '['
-  while [ $# -gt 0 ]; do
-    x=${1//\\/\\\\}
-    echo -n \"${x//\"/\\\"}\"
-    [ $# -gt 1 ] && echo -n ', '
-    shift
-  done
-  echo ']'
-}
 cat <<EOF > config.json
 {
-  "SLACK_WEBHOOK_URL" : "$SLACK_WEBHOOK_URL",
-  "GC_SLACK_STATUS": $(json_array "${arr[@]}")
+  "GITHUB_ACCESS_TOKEN": "$GITHUB_ACCESS_TOKEN"
 }
 EOF
 
@@ -37,11 +23,15 @@ fi
 # Create bucket.
 gsutil mb -p $PROJECT_ID gs://$BUCKET_NAME
 
-# Deploy function.
+# Use default function name if not set.
 if [ -z "$FUNCTION_NAME" ]; then
-  export FUNCTION_NAME="containerSlackIntegration"
+  export FUNCTION_NAME="containerGithubIntegration"
 fi
+
+# Use default region if not set.
 if [ -z "$REGION" ]; then
   export REGION="us-central1"
 fi
+
+# Deploy function.
 gcloud beta functions deploy $FUNCTION_NAME --stage-bucket $BUCKET_NAME --trigger-topic cloud-builds --entry-point subscribe --region $REGION

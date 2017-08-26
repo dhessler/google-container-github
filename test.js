@@ -112,7 +112,7 @@ describe('createSlackMessage', () => {
 
 function cleanConfig(callback) {
   let config = {
-    SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/XXX',
+    GITHUB_ACCESS_TOKEN: 'myaccesstoken',
   }
   fs.writeFile('config.json', JSON.stringify(config), 'utf8', callback);
 }
@@ -227,7 +227,7 @@ describe('subscribe', () => {
       });
     }, function() {
       // clean the status list.
-      lib.GC_SLACK_STATUS = null;
+      lib.GC_GITHUB_STATUS = null;
       done();
     });
   });
